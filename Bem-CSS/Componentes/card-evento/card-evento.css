@@ -1,0 +1,59 @@
+.event{
+    margin-top: 100px;
+    width: 100%;
+    gap: 30px;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+   
+}
+
+
+.card-evento{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;    
+    width: 250px;
+    height: 250px;
+    margin: 5px;
+    border: 2px solid red;
+    border-radius: 5px;
+
+}
+
+
+/* Texto */
+.card__titulo {
+    color: #000;
+    /* font-family: Poppins; */
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.card__texto{
+    width: 192px;
+    height: 72px;
+    text-align: center;
+}
+
+.button__conectar{
+    display: block;
+    width: 85px;
+    height: 27px;
+    /* min-width: 150px; */
+    /* background-color: white; */
+    color: red;
+    text-align: center;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.button__conectar:hover{
+    opacity: .8;
+}
+
+
+
