@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 
 import EventosPage from './pages/EventosPage/EventosPage';
 import HomePage from './pages/HomePage/HomePage';
@@ -12,7 +13,7 @@ const routes = () => {
     return (
         <div>
             <BrowserRouter>
-            <Header/>
+            
                 <Routes>
                     <Route element={<HomePage />} path="/" exact />
                     <Route element={<LoginPage />} path="/login" />
@@ -22,6 +23,7 @@ const routes = () => {
                 </Routes>
                 <Footer/>
             </BrowserRouter>
+            
         </div>
     );
 };

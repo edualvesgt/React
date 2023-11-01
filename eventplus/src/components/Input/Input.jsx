@@ -12,7 +12,7 @@ const Input = (props) => {
                 value={props.value}
                 onChange={props.onChange}
             />
-            <span>{props.value}</span>
+            {/* <span>{props.value}</span> */}
         </>
     );
 };

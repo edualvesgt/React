@@ -6,6 +6,13 @@ import Input from '../../components/Input/Input';
 const TestePage = () => {
     const [n1, setN1] = useState(0)
     const [n2, setN2] = useState(0)
+    const [total, serTotal] = useState()
+
+    function handleCalcular(e) {
+        e.preventDefault();
+        serTotal(parseFloat(n1) + parseFloat(n2));
+        
+    }
 
     return (
         <div>
@@ -13,14 +20,14 @@ const TestePage = () => {
             <h1>Pagina de Poc`s</h1>
 
             <h2>Calculator</h2>
-            <form action="">
+            <form onSubmit={handleCalcular}>
                 <Input
                     type="number"
                     placeholder="Digite o numero"
                     name="n1"
                     id="n1"
                     value={n1}
-                    onChange={(e) => {setN1(e.target.value)}}
+                    onChange={(e) => { setN1(e.target.value) }}
                 />
 
                 <br /><br />
@@ -31,7 +38,7 @@ const TestePage = () => {
                     name="n2"
                     id="n2"
                     value={n2}
-                    onChange={(e) =>{setN2(e.target.value)}}
+                    onChange={(e) => { setN2(e.target.value) }}
                 />
 
                 <br /><br />
@@ -40,6 +47,11 @@ const TestePage = () => {
                     type="submit"
                 />
             </form>
+           
+            <br />
+            <span> Total : <strong > {total} </strong></span>
+
+
         </div>
     );
 };
