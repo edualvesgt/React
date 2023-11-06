@@ -1,24 +1,36 @@
 import React from 'react';
-import logMobile from '../../assets/images/log-white.svg'
-import logDesktop from '../../assets/images/log-pink.svg'
+
+import logoMobile from '../../assets/images/logo-white.svg'
+import logoDesktop from '../../assets/images/logo-pink.svg'
+import { Link } from 'react-router-dom';
+
 import './Nav.css';
-const Nav = () => {
+
+const Nav = ({ exibeNavbar, setExibeNavbar }) => {
+    
     return (
-        <div>
-            <span className='navbar__close'>x</span>
+        <nav className={`navbar ${exibeNavbar ? "exibeNavbar" : ""}`}>
 
-           <a href="" className='eventlogo'>
-            <img className='eventlogo__logoimage' src={logMobile} alt="" />
-           </a>
-           
-           <div className="navbar__items-box">
-            <a href="">Home</a>
-            <a href=""> Tipo de Eventos</a>
-            <a href=""> Usuarios</a>
-            <a href=""> Contatos</a>
+            <span onClick={() => { setExibeNavbar(false) }} className='navbar__close'> X </span>
 
-           </div>
-        </div>
+            <Link to="/" className='eventlogo'>
+                <img
+                    className='eventlogo__logo-image'
+                    src={window.innerWidth >= 992 ? logoDesktop : logoMobile}
+                    alt="Event Plus Logo"
+                />
+            </Link>
+
+            <div className='navbar__items-box'>
+                <Link to="/" className='navbar__item'>Home</Link>
+                <Link to="/tipo-eventos" className='navbar__item'>Tipos de Evento </Link>
+                <Link to="/testes" className='navbar__item'>Teste</Link>
+                <Link to="/eventos" className='navbar__item'>Eventos</Link>
+                <Link to="/login" className='navbar__item'>Login</Link>
+
+            </div>
+
+        </nav>
     );
 };
 

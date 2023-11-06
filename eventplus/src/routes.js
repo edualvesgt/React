@@ -12,8 +12,7 @@ import TipoEventos from './pages/TipoEventos/TipoEventos';
 const routes = () => {
     return (
         <div>
-            <BrowserRouter>
-            
+            <BrowserRouter> 
                 <Routes>
                     <Route element={<HomePage />} path="/" exact />
                     <Route element={<LoginPage />} path="/login" />
