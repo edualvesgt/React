@@ -8,7 +8,7 @@ const VisionSection = () => {
 
         <Title titleText ={"Visao"} color ='white' className ="vision__title"/>
         
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident ducimus quisquam nostrum, tempora deleniti, quasi aspernatur, odit quia culpa amet numquam! Provident, libero aliquid necessitatibus quas molestias quasi expedita ad?</p>
+        <p className='vision__text'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident ducimus quisquam nostrum, tempora deleniti, quasi aspernatur, odit quia culpa amet numquam! Provident, libero aliquid necessitatibus quas molestias quasi expedita ad?</p>
 
         </div>
        </section>
