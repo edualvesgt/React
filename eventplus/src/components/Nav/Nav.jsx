@@ -7,14 +7,14 @@ import { Link } from 'react-router-dom'; // Importa o componente Link do react-r
 import './Nav.css'; // Importa o arquivo de estilos CSS para o componente Nav
 
 const Nav = ({ exibeNavbar, setExibeNavbar }) => {
-    
+
     return (
         <nav className={`navbar ${exibeNavbar ? "exibeNavbar" : ""}`}>
             {/* Renderiza a barra de navegação, a classe CSS 'exibeNavbar' é adicionada se exibeNavbar for verdadeiro */}
-            
+
             <span onClick={() => { setExibeNavbar(false) }} className='navbar__close'> X </span>
             {/* Renderiza um botão 'X' para fechar a barra de navegação ao ser clicado */}
-            
+
             <Link to="/" className='eventlogo'>
                 <img
                     className='eventlogo__logo-image'
@@ -23,13 +23,12 @@ const Nav = ({ exibeNavbar, setExibeNavbar }) => {
                 />
             </Link>
             {/* Renderiza um link para a página inicial, contendo o logotipo, cuja imagem muda com base na largura da janela */}
-            
+
             <div className='navbar__items-box'>
                 {/* Renderiza uma caixa que contém links para diferentes páginas */}
-                
+
                 <Link to="/" className='navbar__item'>Home</Link> {/* Link para a página inicial */}
                 <Link to="/tipo-eventos" className='navbar__item'>Tipos de Evento</Link> {/* Link para a página de tipos de evento */}
-                {/* <Link to="/testes" className='navbar__item'>Teste</Link> Link para a página de testes */}
                 <Link to="/eventos" className='navbar__item'>Eventos</Link> {/* Link para a página de eventos */}
                 <Link to="/login" className='navbar__item'>Login</Link> {/* Link para a página de login */}
             </div>
