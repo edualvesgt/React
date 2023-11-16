@@ -17,20 +17,28 @@ const TipoEventos = () => {
     const [frmEdit, setFrmEdit] = useState(false); // Inicialmente não está no modo de edição
     const [titulo, setTitulo] = useState("");
     const [tipoEventos, setTipoEventos] = useState([]);
-
+    // Este trecho utiliza o hook useEffect para carregar os tipos de eventos quando há mudanças em 'tipoEventos'
     useEffect(() => {
+        // Função assíncrona que carrega os tipos de eventos
         async function loadEventsType() {
             try {
+                // Faz uma requisição GET para a API para obter os tipos de eventos
                 const retorno = await api.get(eventsTypeResource);
-                setTipoEventos(retorno.data)
+
+                // Atualiza o estado 'tipoEventos' com os dados retornados da API
+                setTipoEventos(retorno.data);
+
+                // Exibe os dados retornados no console para fins de depuração
                 console.log(retorno.data);
             } catch (error) {
+                // Se ocorrer um erro ao acessar a API, exibe uma mensagem de erro no console
                 console.log("Erro na API");
             }
         }
 
+        // Chama a função 'loadEventsType' ao carregar o componente ou quando 'tipoEventos' muda
         loadEventsType();
-    }, []);
+    }, [tipoEventos]); // O useEffect é acionado quando 'tipoEventos' sofre alterações
 
     // Função para lidar com o envio do formulário
     async function handleSubmit(e) {
@@ -64,9 +72,27 @@ const TipoEventos = () => {
         alert(`vamos mostar o formulario`)
     }
     // apaga o tipo de evento na api
-    function handleDelete(idElement) {
-        alert(`Vamos apagar o evento ${idElement}`)
+    // Esta função lida com a exclusão de um elemento pelo seu ID
+    async function handleDelete(idElemento) {
+        try {
+            // Envia uma requisição DELETE para a API usando o ID fornecido
+            const resposta = await api.delete(`${eventsTypeResource}/${idElemento}`);
+
+            if (!window.confirm("Deseja apagar este Evento")) {
+                return;
+            }
+
+            // Se a exclusão for bem-sucedida (código de status 204), exibe uma mensagem de sucesso e atualiza o estado
+            if (resposta.status === 204) {
+                alert("Apagado com Sucesso"); // Mensagem de sucesso
+                setTipoEventos([]); // Limpa o estado tipoEventos (presumindo que esta variável de estado seja declarada e usada em outro lugar)
+            }
+        } catch (erro) {
+            // Se ocorrer um erro durante a exclusão, exibe uma mensagem de erro
+            alert("Ocorreu um erro ao enviar");
+        }
     }
+
 
     return (
         <>
@@ -122,7 +148,7 @@ const TipoEventos = () => {
                     <Container>
                         <Title titleText={"Lista Tipo de eventos"} color="white" />
 
-                        <TableTp dados={TipoEventos} fnUpdate={showUpdateForm} fnDelete={handleDelete} />
+                        <TableTp dados={tipoEventos} fnUpdate={showUpdateForm} fnDelete={handleDelete} />
                     </Container>
                 </section>
             </MainContent>
