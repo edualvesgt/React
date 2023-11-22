@@ -26,7 +26,7 @@ const TipoEventos = () => {
 
     const [idEvento, setIdEvento] = useState(null); //Para editar, por conta do evento!
 
-    const [showSpinner , setShowSpinner] = useState (false)
+    const [showSpinner, setShowSpinner] = useState(false)
 
 
     // Este trecho utiliza o hook useEffect para carregar os tipos de eventos quando há mudanças em 'tipoEventos'
@@ -63,10 +63,16 @@ const TipoEventos = () => {
         e.preventDefault();
         // Validação para o comprimento do título
         if (titulo.trim().length < 3) {
-            alert("O Título deve ter pelo menos 3 caracteres ")
-        }
+            setNotifyUser({
+                titleNote: "Titulo deve Possuir mais de 3 Caracteres",
+                textNote: `Nao foi possivel Cadastrar o ${titulo}`,
+                imgIcon: "danger",
+                imgAlt: "Imagem de ilustracai de erro, Warning!",
+                showMessage: true
+            });
 
-        try {
+        }
+        else try {
             // Envio do título para a API
             const retorno = await api.post(eventsTypeResource, { titulo: titulo })
             setTitulo("");
@@ -84,17 +90,23 @@ const TipoEventos = () => {
             setTipoEventos(buscaEventos.data);
 
         } catch (error) {
-            alert("Ocorreu um erro ao enviar")
+            setNotifyUser({
+                titleNote: "Erro ao Enviar ",
+                textNote: `Nao foi possivel atualizar ${error}`,
+                imgIcon: "danger",
+                imgAlt: "Imagem de ilustracai de erro, Warning!",
+                showMessage: true
+            });
+
         }
     }
 
-  
 
     // Função para lidar com a ação de atualização
     async function handleUpdate(e) {
         e.preventDefault()
         try {
-            const promiseRetorno = await api.put( `${eventsTypeResource}/${idEvento}`, {titulo: titulo });
+            const promiseRetorno = await api.put(`${eventsTypeResource}/${idEvento}`, { titulo: titulo });
 
             if (promiseRetorno.status === 204) {
                 //Notificar usuario
@@ -143,7 +155,7 @@ const TipoEventos = () => {
         try {
             const retorno = await api.get(`${eventsTypeResource}/${idElement}`)
             setTitulo(retorno.data.titulo)
-            setIdEvento(retorno.data.idTipoEvento)  
+            setIdEvento(retorno.data.idTipoEvento)
 
         } catch (error) {
             setNotifyUser({
@@ -184,9 +196,16 @@ const TipoEventos = () => {
                 });
 
             }
-        } catch (erro) {
+        } catch (error) {
             // Se ocorrer um erro durante a exclusão, exibe uma mensagem de erro
-            alert("Ocorreu um erro ao enviar");
+            setNotifyUser({
+                titleNote: "Erro ao envir",
+                textNote: `Nao foi possivel atualizar ${error}`,
+                imgIcon: "danger",
+                imgAlt: "Imagem de ilustracai de erro, Warning!",
+                showMessage: true
+            });
+
         }
     }
 
@@ -198,7 +217,10 @@ const TipoEventos = () => {
             {/* Renderizando o componente Header */}
             <Header />
             <MainContent>
-                
+
+
+                {showSpinner ? <Spinner /> : null}
+
                 <section className="cadastro-evento-section">
                     <Container>
                         <div className="cadastro-evento__box">

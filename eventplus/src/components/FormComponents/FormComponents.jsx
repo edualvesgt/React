@@ -39,7 +39,11 @@ export const Select = ({ options, name, id, manipulationFunction, additionalClas
 
             {options.map((op) => {
                 return (
-                    <option key={Math.random()} value={op.value}> {op.text}</option>
+                    <option key={Math.random()} value={op.value}>
+
+                        {op.text}
+                        
+                    </option>
                 )
 
             })}
