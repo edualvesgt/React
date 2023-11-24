@@ -30,18 +30,22 @@ export const Button = ({ textButton, name, id, type, manipulationFunction, addit
 export const Select = ({ options, name, id, manipulationFunction, additionalClass = "", required, defaultValue }) => {
     return (
         <select
-            name={name} id={id} required={required}
+            name={name} 
+            id={id} 
+            required={required}
             className={`input-component ${additionalClass}`}
-            value={defaultValue} onChange={manipulationFunction}
+            value={defaultValue} 
+            onChange={manipulationFunction}
+
         >
-            {/* <option value="">Tipo Evento </option> */}
+            <option defaultValue  hidden>Selecione o tipo do evento </option>
 
 
             {options.map((op) => {
                 return (
-                    <option key={Math.random()} value={op.value}>
+                    <option key={op.idTipoEvento} value={op.idTipoEvento}>
 
-                        {op.text}
+                        {op.titulo}
                         
                     </option>
                 )

@@ -176,12 +176,10 @@ const TipoEventos = () => {
 
             if (!window.confirm("Deseja apagar este Evento")) {
                 return;
-            }
+            }       
 
             // Se a exclusão for bem-sucedida (código de status 204), exibe uma mensagem de sucesso e atualiza o estado
             if (resposta.status === 204) {
-
-
 
                 const buscaEventos = await api.get(eventsTypeResource);
 
