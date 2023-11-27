@@ -1,51 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../../components/Header/Header';
-import Title from '../../components/Titulo/Titulo';
-import MainContext from '../../components/Main/MainContent';
-import './EventosPage.css';
-import Container from '../../components/Container/Container';
-import ImageIllustrator from '../../components/ImageIllustrator/ImageIllustrator'
-import EventPhoto from '../../assets/images/evento.svg'
-import { Button, Input, Select } from '../../components/FormComponents/FormComponents';
-import TableEv from './TableEv/TableEv';
-import api, { eventsResource, eventsTypeResource } from '../../Services/Service';
-import Notification from '../../components/Notification/Notification';
-import Titulo from '../../components/Titulo/Titulo';
 
+// Components
+import Header from '../../components/Header/Header';
+import ImageIllustrator from '../../components/ImageIllustrator/ImageIllustrator';
+import Container from '../../components/Container/Container';
+import Notification from '../../components/Notification/Notification';
+import TableEv from './TableEv/TableEv';
+import Titulo from '../../components/Titulo/Titulo';
+import MainContext from '../../components/Main/MainContent';
+import Spinner from '../../components/Spinner/Spinner'
+
+// Assets and Services
+import EventPhoto from '../../assets/images/evento.svg';
+import api, { eventsResource, eventsTypeResource } from '../../Services/Service';
+
+// Form Components
+import { Button, Input, Select } from '../../components/FormComponents/FormComponents';
 
 const EventosPage = () => {
-
-    const [eventos, setEventos] = useState([]);
-
+    // Estados em ordem alfabética
+    const [dataEvento, setDataEvento] = useState();
+    const [descricao, setDescricao] = useState();
+    const [frmEdit, setFrmEdit] = useState(false);
     const [idEventos, setIdEventos] = useState([]);
-
-    const [listTipoEvento, setListTipoEvento] = useState([]); //uma lista do tipo de evento
-
-    const [frmEdit, setFrmEdit] = useState(false)
-
-    const [notifyUser, setNotifyUser] = useState({});
-
-    const [showSpinner, setShowSpinner] = useState(false)
-
-    const [titulo, setTitulo] = useState("");
-
-    const [dataEvento, setDataEvento] = useState()
-
-    const [nomeEvento, setNomeEvento] = useState()
-
-    const [descricao, setDescricao] = useState()
-
-    const [idTipoEvento, setIdTipoEvento] = useState();
-
     const Instituicao = "6aa3a247-56ea-412d-9ccc-41fab9b79515"
-
-    const [tipoEvento, setTipoEvento] = useState() // Teste para ver o metodo
+    const [idTipoEvento, setIdTipoEvento] = useState();
+    const [listTipoEvento, setListTipoEvento] = useState([]); // Uma lista do tipo de evento
+    const [nomeEvento, setNomeEvento] = useState();
+    const [notifyUser, setNotifyUser] = useState({});
+    const [showSpinner, setShowSpinner] = useState(false);
+    const [eventos, setEventos] = useState([]);
+    const [titulo, setTitulo] = useState('');
+    const [tipoEvento, setTipoEvento] = useState(); // Teste para ver o metodo
 
     useEffect(() => {
         // Função assíncrona que carrega os tipos de eventos
         async function loadEvents() {
-
-            // setShowSpinner(true)
+            setShowSpinner(true)
             try {
                 // Faz uma requisição GET para a API para obter os tipos de eventos
                 const retorno = await api.get(eventsResource);
@@ -56,19 +47,18 @@ const EventosPage = () => {
                 // Exibe os dados retornados no console para fins de depuração
                 console.log(retorno.data);
 
-
-                const request = await (await api.get(eventsTypeResource)).data
-
+                const request = await (await api.get(eventsTypeResource)).data;
                 setListTipoEvento(request);
             } catch (error) {
                 // Se ocorrer um erro ao acessar a API, exibe uma mensagem de erro no console
-                console.log("Erro na API");
-            }
-            // setShowSpinner(false)
+                console.log('Erro na API');
 
+                notifyError("Erro na API");
+            }
+            setShowSpinner(false)
         }
 
-        // Chama a função 'loadEvents' ao carregar o componente 
+        // Chama a função 'loadEvents' ao carregar o componente
         loadEvents();
     }, []);
 
@@ -83,13 +73,8 @@ const EventosPage = () => {
 
         if (nomeEvento.trim().length < 5) {
 
-            setNotifyUser({
-                titleNote: "Titulo deve Possuir mais de 3 Caracteres",
-                textNote: `Nao foi possivel Cadastrar o ${nomeEvento}`,
-                imgIcon: "danger",
-                imgAlt: "Imagem de ilustracai de erro, Warning!",
-                showMessage: true
-            })
+
+            notifyWarning("O Titulo deve ter Mais de 5 Caracteres ")
         }
         else try {
             const retorno = await api.post(eventsResource, {
@@ -101,30 +86,17 @@ const EventosPage = () => {
                 "idInstituicao": Instituicao
             })
 
-
-            setNotifyUser({
-                titleNote: "Sucesso",
-                textNote: `${nomeEvento}  Cadastrado com sucesso`,
-                imgIcon: "Success",
-                imgAlt: "Imagem de Ilustracao de sucesso . Moca segurando um balao com simbolo de confirmacao",
-                showMessage: true
-            });
+            notifySuccess("Evento Cadastrado Com Sucesso")
 
             ApiReload();
 
         } catch (error) {
 
-            setNotifyUser({
-                titleNote: "Erro ao Enviar ",
-                textNote: `Nao foi possivel atualizar ${error}`,
-                imgIcon: "danger",
-                imgAlt: "Imagem de ilustracai de erro, Warning!",
-                showMessage: true
-            });
+            notifyError("Nao foi Possivel Cadastrar o Evento")
         }
     }
 
-    async function handleDelete(idElement, nomeEvento) {
+    async function handleDelete(idElement) {
 
         if (window.confirm("Deseja Apagar este Evento")) {
 
@@ -134,23 +106,12 @@ const EventosPage = () => {
                 console.log((await retorno).status);
 
                 ApiReload();
-                setNotifyUser({
-                    titleNote: "Sucesso",
-                    textNote: `${nomeEvento} Excluido com Sucesso`,
-                    imgIcon: "Success",
-                    imgAlt: "Imagem de Ilustracao de sucesso . Moca segurando um balao com simbolo de confirmaco",
-                    showMessage: true
-                });
+
+                notifySuccess("Evento Deletado Com Sucesso");
 
             } catch (error) {
 
-                setNotifyUser({
-                    titleNote: "Erro ao envir",
-                    textNote: `Nao foi possivel atualizar ${error}`,
-                    imgIcon: "danger",
-                    imgAlt: "Imagem de ilustracai de erro, Warning!",
-                    showMessage: true
-                });
+                notifyError("Nao foi Possivel Deletar e Evento ")
             }
 
         }
@@ -171,18 +132,13 @@ const EventosPage = () => {
                 "idInstituicao": Instituicao
             });
 
-            setNotifyUser({
-                titleNote: "Sucesso",
-                textNote: `Atualizado com sucesso`,
-                imgIcon: "success",
-                imgAlt: "Imagem de ilustracao de sucesso. moca segurando um balao com simbolo de confirmacao ok",
-                showMessage: true
-            });
+            notifySuccess("O Evento foi Ataulizado com sucesso")
+
             ApiReload();
 
             editActionAbort();
         } catch (error) {
-
+            notifyError("Nao Foi possivel atualizar o Evento")
         }
 
 
@@ -198,7 +154,7 @@ const EventosPage = () => {
             setDataEvento(retorno.data.dataEvento.slice(0, 10));
             setDescricao(retorno.data.descricao);
             setIdTipoEvento(retorno.data.idTipoEvento)
-            
+
 
 
         } catch (error) {
@@ -212,16 +168,48 @@ const EventosPage = () => {
         setNomeEvento("")
         setDataEvento("")
         setDescricao("")
-       
+
     }
+
+    const notifySuccess = (textNote) => {
+        setNotifyUser({
+            titleNote: "Sucesso",
+            textNote,
+            imgIcon: 'success',
+            imgAlt: 'Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.',
+            showMessage: true
+        });
+    };
+
+    const notifyError = (textNote) => {
+        setNotifyUser({
+            titleNote: "Erro",
+            textNote,
+            imgIcon: 'danger',
+            imgAlt: 'Imagem de ilustração de erro. Homem segurando um balão com símbolo de X.',
+            showMessage: true
+        });
+    };
+
+    const notifyWarning = (textNote) => {
+        setNotifyUser({
+            titleNote: "Aviso",
+            textNote,
+            imgIcon: 'warning',
+            imgAlt: 'Imagem de ilustração de aviso. Mulher em frente a um grande ponto de exclamação.',
+            showMessage: true
+        });
+    };
+
 
     return (
         <>
             {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
+            {showSpinner ? <Spinner /> : null}
             <MainContext>
                 <Header />
                 <Container>
-                    <div className='cadastro-evento__box '>
+                    <div className='cadastro-evento__box cadastro-evento-section '>
 
                         <Titulo titleText={"Eventos"} />
 
@@ -331,7 +319,7 @@ const EventosPage = () => {
                                                 id={"Editar"}
                                                 name={"Editar"}
                                                 type={"submit"}
-                                               
+
                                             />
 
                                             <Button
@@ -353,7 +341,7 @@ const EventosPage = () => {
                 </Container>
                 <section className='lista-eventos-section'>
                     <Container>
-                        <Title titleText={"Lista Eventos"} color="white" />
+                        <Titulo titleText={"Lista Eventos"} color="white" />
                         <TableEv dados={eventos} fnDelete={handleDelete} fnUpdate={showUpdate} />
                     </Container>
                 </section>
