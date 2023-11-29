@@ -89,6 +89,7 @@ const EventosPage = () => {
             notifySuccess("Evento Cadastrado Com Sucesso")
 
             ApiReload();
+            
 
         } catch (error) {
 

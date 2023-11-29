@@ -1,32 +1,35 @@
-//IMPORTS
+// Imports Do React
 import React, { useEffect, useState } from 'react';
-import './TipoEventosPage.css';
+
+// Imports de assets
+import tipoEventoImage from '../../assets/images/tipo-evento.svg';
+
+// Imports de componentes
 import Header from '../../components/Header/Header';
 import Title from '../../components/Titulo/Titulo';
-import MainContent from '../../components/Main/MainContent.jsx'
+import MainContent from '../../components/Main/MainContent.jsx';
 import Container from '../../components/Container/Container';
 import ImageIllustrator from '../../components/ImageIllustrator/ImageIllustrator';
 import TableTp from './TableTp/TableTp';
-import tipoEventoImage from '../../assets/images/tipo-evento.svg'
-import { Input, Button } from "../../components/FormComponents/FormComponents";
-import api, { eventsTypeResource } from '../../Services/Service'
+import { Input, Button } from '../../components/FormComponents/FormComponents';
 import Notification from '../../components/Notification/Notification';
-import Spinner from '../../components/Spinner/Spinner'
+import Spinner from '../../components/Spinner/Spinner';
+
+// Imports de serviços/API
+import api, { eventsTypeResource } from '../../Services/Service';
+
+// Import do CSS
+import './TipoEventosPage.css';
 
 // Componente para gerenciar os Tipos de Eventos
 const TipoEventos = () => {
-    // Variáveis de estado usando React Hooks
-    const [notifyUser, setNotifyUser] = useState();
-
-    const [frmEdit, setFrmEdit] = useState(false); // Inicialmente não está no modo de edição
-
-    const [titulo, setTitulo] = useState("");
-
-    const [tipoEventos, setTipoEventos] = useState([]);
-
-    const [idEvento, setIdEvento] = useState(null); //Para editar, por conta do evento!
-
-    const [showSpinner, setShowSpinner] = useState(false)
+  // Variáveis de estado usando React Hooks
+  const [frmEdit, setFrmEdit] = useState(false); // Inicialmente não está no modo de edição
+  const [idEvento, setIdEvento] = useState(null); // Para editar, por conta do evento!
+  const [notifyUser, setNotifyUser] = useState();
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [tipoEventos, setTipoEventos] = useState([]);
+  const [titulo, setTitulo] = useState('');
 
 
     // Este trecho utiliza o hook useEffect para carregar os tipos de eventos quando há mudanças em 'tipoEventos'
@@ -42,11 +45,9 @@ const TipoEventos = () => {
                 // Atualiza o estado 'tipoEventos' com os dados retornados da API
                 setTipoEventos(retorno.data);
 
-                // Exibe os dados retornados no console para fins de depuração
-                console.log(retorno.data);
+               
             } catch (error) {
-                // Se ocorrer um erro ao acessar a API, exibe uma mensagem de erro no console
-                console.log("Erro na API");
+                
             }
             setShowSpinner(false)
 
@@ -137,7 +138,7 @@ const TipoEventos = () => {
                 showMessage: true
             });
 
-            console.log(error);
+            
         }
     }
 

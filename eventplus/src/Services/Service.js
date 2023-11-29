@@ -9,6 +9,12 @@ import axios from "axios";
  */
 export const eventsResource = '/Evento'
 
+// Rota para login
+export const LoginResource = '/login'
+
+
+// Rota para login
+export const IstituicaoResource = '/instituicao'
 /**
  *  Rota para o recurso proximos eventos
  */
