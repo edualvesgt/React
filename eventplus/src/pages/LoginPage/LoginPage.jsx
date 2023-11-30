@@ -1,5 +1,5 @@
 // Imports do React Router e React
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, { useContext, useEffect, useState } from 'react';
 
 // Imports de assets
@@ -13,7 +13,7 @@ import ImageIllustrator from '../../components/ImageIllustrator/ImageIllustrator
 import Notification from '../../components/Notification/Notification';
 
 // Imports de serviços/API/Context
-import api, { eventsResource, eventsTypeResource, LoginResource } from '../../Services/Service';
+import api, { HomeResource, LoginResource } from '../../Services/Service';
 import { UserContext, userDecodeToken } from '../../context/AuthContext';
 
 // Estilos CSS
@@ -21,10 +21,17 @@ import "./LoginPage.css";
 
 const LoginPage = () => {
   // Declarações de useState organizadas em ordem alfabética
+  const navigate = useNavigate();
   const [notifyUser, setNotifyUser] = useState({});
-  const [user, setUser] = useState ({email: "teste@teste.com" , senha:""});
-  const {userData, setUserData} = useContext(UserContext); // Importa os Dados do usuario
+  const [user, setUser] = useState({ email: "teste@teste.com", senha: "" });
+  const { userData, setUserData } = useContext(UserContext); // Importa os Dados do usuario
   // Declarações de useState organizadas em ordem alfabética
+
+  useEffect(() => {
+    if (userData.nome) {
+      navigate(LoginResource)
+    }
+  }, [userData])
 
 
   // Função para lidar com o envio do formulário de login
@@ -38,15 +45,15 @@ const LoginPage = () => {
           "senha": user.senha
         });
 
-
-        const userFullToken = userDecodeToken(promise.data)
+        const userFullToken = userDecodeToken(promise.data.token)
 
         //Guarda  o token Globalmente 
         setUserData(userFullToken);
         localStorage.setItem("token", JSON.stringify(userFullToken))
 
-        notifySuccess("Seja Bem-Vindo , Login Efetuado Com Sucesso");
+        navigate(HomeResource)
 
+        notifySuccess("Seja Bem-Vindo , Login Efetuado Com Sucesso");
 
       } catch (error) {
         notifyError("erro no Login");
@@ -55,7 +62,7 @@ const LoginPage = () => {
       notifyWarning("Senha deve conter mais de 3 caracteres");
     }
 
-   
+
   }
 
   // Função para exibir uma notificação de sucesso

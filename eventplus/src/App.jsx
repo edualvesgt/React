@@ -1,5 +1,6 @@
 // Importa o hook 'useState' do React
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Importa o contexto 'UserContext' do arquivo './context/AuthContext'
 import { UserContext } from './context/AuthContext';
@@ -11,6 +12,12 @@ import Rotas from './routes';
 function App() {
   // Define um estado 'userData' e uma função 'setUserData' para atualizá-lo
   const [userData, setUserData] = useState({});
+  
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    setUserData(token === null ? {} : JSON.parse(token))
+  }, [])
 
   return (
     <div className="App">
