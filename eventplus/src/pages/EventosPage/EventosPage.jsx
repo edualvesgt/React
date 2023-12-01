@@ -208,7 +208,7 @@ const EventosPage = () => {
             {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
             {showSpinner ? <Spinner /> : null}
             <MainContext>
-                <Header />
+                
                 <Container>
                     <div className='cadastro-evento__box cadastro-evento-section '>
 

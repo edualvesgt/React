@@ -34,36 +34,45 @@ const LoginPage = () => {
   }, [userData])
 
 
-  // Função para lidar com o envio do formulário de login
-  async function handleSubmit(e) {
-    e.preventDefault();
 
+  // Função assíncrona que lida com o envio do formulário de login
+  async function handleSubmit(e) {
+    e.preventDefault(); // Previne o comportamento padrão de envio do formulário
+
+    // Verifica se o comprimento do email e senha é maior ou igual a 3 caracteres
     if (user.email.length >= 3 && user.senha.length >= 3) {
       try {
+        // Envia uma solicitação POST para a API com o email e senha fornecidos
         const promise = await api.post(LoginResource, {
           "email": user.email,
           "senha": user.senha
         });
 
-        const userFullToken = userDecodeToken(promise.data.token)
+        // Decodifica o token retornado pela API para obter informações do usuário
+        const userFullToken = userDecodeToken(promise.data.token);
 
-        //Guarda  o token Globalmente 
+        // Armazena o token do usuário globalmente no estado
         setUserData(userFullToken);
-        localStorage.setItem("token", JSON.stringify(userFullToken))
 
-        navigate(HomeResource)
+        // Armazena o token do usuário localmente no armazenamento do navegador
+        localStorage.setItem("token", JSON.stringify(userFullToken));
 
-        notifySuccess("Seja Bem-Vindo , Login Efetuado Com Sucesso");
+        // Navega para a página inicial após o login bem-sucedido
+        navigate(HomeResource);
+
+        // Exibe uma notificação de sucesso após o login bem-sucedido
+        notifySuccess("Seja Bem-Vindo, Login Efetuado Com Sucesso");
 
       } catch (error) {
-        notifyError("erro no Login");
+        // Em caso de erro na solicitação à API, exibe uma notificação de erro
+        notifyError("Erro no Login");
       }
     } else {
+      // Se o comprimento da senha for inferior a 3 caracteres, exibe um aviso
       notifyWarning("Senha deve conter mais de 3 caracteres");
     }
-
-
   }
+
 
   // Função para exibir uma notificação de sucesso
   const notifySuccess = (textNote) => {
@@ -101,7 +110,7 @@ const LoginPage = () => {
   return (
     <>
       {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
-      <Header />
+     
       <div className="layout-grid-login">
         <div className="login">
           <div className="login__illustration">

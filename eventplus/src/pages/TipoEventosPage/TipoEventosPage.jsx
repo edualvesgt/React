@@ -213,8 +213,7 @@ const TipoEventos = () => {
         <>
 
             <Notification  {...notifyUser} setNotifyUser={setNotifyUser} />
-            {/* Renderizando o componente Header */}
-            <Header />
+            
             <MainContent>
 
 

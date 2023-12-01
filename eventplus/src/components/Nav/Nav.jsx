@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import logoMobile from '../../assets/images/logo-white.svg' // Importa a imagem do logotipo para telas móveis
 import logoDesktop from '../../assets/images/logo-pink.svg' // Importa a imagem do logotipo para telas de desktop
 import { Link } from 'react-router-dom'; // Importa o componente Link do react-router-dom
 
 import './Nav.css'; // Importa o arquivo de estilos CSS para o componente Nav
+import { UserContext } from '../../context/AuthContext';
 
 const Nav = ({ exibeNavbar, setExibeNavbar }) => {
 
+    const { userData } = useContext(UserContext);
+
     return (
+
+
         <nav className={`navbar ${exibeNavbar ? "exibeNavbar" : ""}`}>
             {/* Renderiza a barra de navegação, a classe CSS 'exibeNavbar' é adicionada se exibeNavbar for verdadeiro */}
 
@@ -28,8 +33,18 @@ const Nav = ({ exibeNavbar, setExibeNavbar }) => {
                 {/* Renderiza uma caixa que contém links para diferentes páginas */}
 
                 <Link to="/" className='navbar__item'>Home</Link> {/* Link para a página inicial */}
-                <Link to="/tipo-eventos" className='navbar__item'>Tipos de Evento</Link> {/* Link para a página de tipos de evento */}
-                <Link to="/eventos" className='navbar__item'>Eventos</Link> {/* Link para a página de eventos */}
+
+                {userData.nome && userData.role === "Administrador" ? (
+                    <>
+                        <Link to="/tipo-eventos" className='navbar__item'>Tipos de Evento</Link> {/* Link para a página de tipos de evento */}
+                        <Link to="/eventos" className='navbar__item'>Eventos</Link> {/* Link para a página de eventos */}
+                    </>
+                ) : userData.nome && userData.role === "Cliente" ? (
+                
+
+                    <Link to="/eventos" className='navbar__item'>Eventos Alunos</Link> /* Link para a página de eventos */
+                ): null}
+
                 {/* <Link to="/login" className='navbar__item'>Login</Link> Link para a página de login */}
             </div>
         </nav>

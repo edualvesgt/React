@@ -1,12 +1,11 @@
 // Importa o hook 'useState' do React
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // Importa o contexto 'UserContext' do arquivo './context/AuthContext'
 import { UserContext } from './context/AuthContext';
 
 // Importa o componente 'Rotas' que contém as rotas da aplicação
-import Rotas from './routes';
+import Rotas from './routes/routes';
 
 // Função principal App que representa a aplicação
 function App() {

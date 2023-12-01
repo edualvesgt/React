@@ -36,7 +36,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <Header />
+          
             {/* <Title titleText={"Home Page"} className="margem_acima" /> */}
             <MainContent>
 
