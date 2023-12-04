@@ -7,6 +7,7 @@ import EventosPage from '../pages/EventosPage/EventosPage';
 import HomePage from '../pages/HomePage/HomePage';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import TipoEventos from '../pages/TipoEventosPage/TipoEventosPage';
+import EventosAlunosPage from '../pages/EventosAlunoPage/EventosAlunoPage';
 import { PrivateRoute } from './PrivateRoutes';
 
 const routes = () => {
@@ -33,6 +34,13 @@ const routes = () => {
                         </PrivateRoute>}
                     />
 
+                    <Route
+                        path={"/eventos-alunos"}
+                        element={<PrivateRoute redirectTo='/'>
+                            <EventosAlunosPage/>
+                        </PrivateRoute>}
+                    />
+
 
                 </Routes>
                 <Footer />
@@ -40,6 +48,6 @@ const routes = () => {
 
         </div>
     );
-};
+}
 
 export default routes;
