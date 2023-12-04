@@ -58,7 +58,7 @@ const EventosAlunoPage = () => {
   }
   return (
     <>
-      <Header exibeNavbar={exibeNavbar} setExibeNavbar={setExibeNavbar} />
+      {/* <Header exibeNavbar={exibeNavbar} setExibeNavbar={setExibeNavbar} /> */}
 
       <MainContent>
         <Container>
