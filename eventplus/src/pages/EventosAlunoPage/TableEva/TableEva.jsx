@@ -20,12 +20,12 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
           <th className="tbal-data__head-title tbal-data__head-title--big">
             Evento
           </th>
-          {/* <th className="tbal-data__head-title tbal-data__head-title--big">
+          <th className="tbal-data__head-title tbal-data__head-title--big">
             Descrição
-          </th> */}
-          {/* <th className="tbal-data__head-title tbal-data__head-title--big">
+          </th>
+          <th className="tbal-data__head-title tbal-data__head-title--big">
             Tipo
-          </th> */}
+          </th>
           <th className="tbal-data__head-title tbal-data__head-title--big">
             Data
           </th>
@@ -41,7 +41,7 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
               <td className="tbal-data__data tbal-data__data--big">
                 {e.nomeEvento}
               </td>
-              {/* <td
+              <td
                 className="tbal-data__data tbal-data__data--big tbal-data__data--handover"
                 data-tooltip-id="description-tooltip"
                 data-tooltip-content={e.descricao}
@@ -52,13 +52,12 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
                   id="description-tooltip"
                   className="custom-tootip"
                 />
-              </td> */}
-              {/* <td className="tbal-data__data tbal-data__data--big">
+              </td>
+              <td className="tbal-data__data tbal-data__data--big">
                 {e.tiposEvento.titulo}
-              </td> */}
+              </td>
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
-                {/* {e.dataEvento} */}
-                {/* {dateFormateDbToView(e.dataEvento)} */}
+                {new Date(e.dataEvento).toLocaleDateString()}
               </td>
 
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">

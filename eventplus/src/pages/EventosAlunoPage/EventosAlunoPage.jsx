@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import Header from "../../components/Header/Header";
 import MainContent from "../../components/Main/MainContent";
 import Title from "../../components/Titulo/Titulo";
 import Table from "./TableEva/TableEva";
@@ -8,7 +7,7 @@ import Container from "../../components/Container/Container";
 import { Select } from "../../components/FormComponents/FormComponents";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
-import api from "../../Services/Service";
+import api, { eventsResource } from "../../Services/Service";
 
 import "./EventosAlunoPage.css";
 import { UserContext } from "../../context/AuthContext";
@@ -20,7 +19,7 @@ const EventosAlunoPage = () => {
   // select mocado
   const [quaisEventos, setQuaisEventos] = useState([
     { value: 1, text: "Todos os eventos" },
-    { value: 2, text: "Meus eventos" },
+    { value: 2, text: "Meus eventos" }
   ]);
 
   const [tipoEvento, setTipoEvento] = useState(1); //código do tipo do Evento escolhido
@@ -30,11 +29,23 @@ const EventosAlunoPage = () => {
   // recupera os dados globais do usuário
   const { userData, setUserData } = useContext(UserContext);
 
-  // useEffect(() => {
-    
+  useEffect(() => {
 
-  //   loadEventsType();
-  // }, []);
+
+    loadEventsType();
+  }, []);
+
+  async function loadEventsType() {
+    setEventos([])
+    if (tipoEvento == 1) {
+      try {
+        const retorno = await api.get(eventsResource);
+        setEventos(retorno.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   // toggle meus eventos ou todos os eventos
   function myEvents(tpEvent) {
@@ -71,7 +82,7 @@ const EventosAlunoPage = () => {
             options={quaisEventos} // aqui o array dos tipos
             onChange={(e) => myEvents(e.target.value)} // aqui só a variável state
             defaultValue={tipoEvento}
-            className="select-tp-evento"
+            additionalClass="select-tp-evento"
           />
           <Table
             dados={eventos}

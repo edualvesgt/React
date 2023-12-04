@@ -12,6 +12,9 @@ export const eventsResource = '/Evento'
 // Rota para login
 export const LoginResource = '/login'
 
+// Rota para login
+export const MyEventsResource = '/PresencasEvento'
+
 // Rota para Home
 export const HomeResource = '/'
 

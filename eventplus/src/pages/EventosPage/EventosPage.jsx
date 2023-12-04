@@ -30,8 +30,6 @@ const EventosPage = () => {
     const [notifyUser, setNotifyUser] = useState({});
     const [showSpinner, setShowSpinner] = useState(false);
     const [eventos, setEventos] = useState([]);
-    const [titulo, setTitulo] = useState('');
-    const [tipoEvento, setTipoEvento] = useState(); // Teste para ver o metodo
 
     useEffect(() => {
         // Função assíncrona que carrega os tipos de eventos
@@ -51,7 +49,6 @@ const EventosPage = () => {
                 setListTipoEvento(request);
             } catch (error) {
                 // Se ocorrer um erro ao acessar a API, exibe uma mensagem de erro no console
-                console.log('Erro na API');
 
                 notifyError("Erro na API");
             }
@@ -66,6 +63,14 @@ const EventosPage = () => {
         const searchEvent = await api.get(eventsResource);
 
         setEventos(searchEvent.data);
+    }
+
+    function dePara(request) {
+        let arrayOptions = [];
+        request.forEach((e) => {
+            arrayOptions.push({ value: e.idTipoEvento, text: e.titulo });
+        });
+        return arrayOptions;
     }
 
     async function handleSubmit(e) {
@@ -89,7 +94,7 @@ const EventosPage = () => {
             notifySuccess("Evento Cadastrado Com Sucesso")
 
             ApiReload();
-            
+
 
         } catch (error) {
 
@@ -208,7 +213,7 @@ const EventosPage = () => {
             {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
             {showSpinner ? <Spinner /> : null}
             <MainContext>
-                
+
                 <Container>
                     <div className='cadastro-evento__box cadastro-evento-section '>
 
@@ -244,7 +249,8 @@ const EventosPage = () => {
                                         <Select
                                             id={"TipoEvento"}
                                             name={"tipo evento"}
-                                            options={listTipoEvento}
+                                            options={dePara(listTipoEvento)}
+                                            defaultValue ={ idTipoEvento}
                                             required={"required"}
                                             manipulationFunction={e => {
                                                 setIdTipoEvento(e.target.value)
@@ -296,9 +302,10 @@ const EventosPage = () => {
 
                                         <Select
                                             id={"TipoEvento"}
-                                            name={"tipo evento"}
-                                            options={listTipoEvento}
+                                            name={"tipoEvento"}
+                                            options={dePara(listTipoEvento)}
                                             required={"required"}
+                                            defaultValue={idTipoEvento}
                                             manipulationFunction={e => {
                                                 setIdTipoEvento(e.target.value)
                                             }}

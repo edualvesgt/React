@@ -38,14 +38,14 @@ export const Select = ({ options, name, id, manipulationFunction, additionalClas
             onChange={manipulationFunction}
 
         >
-            <option defaultValue  hidden>Selecione o tipo do evento </option>
+            <option defaultValue  hidden >Selecione o tipo do evento </option>
 
 
             {options.map((op) => {
                 return (
-                    <option key={op.idTipoEvento} value={op.idTipoEvento}>
+                    <option key={Math.random()} value ={op.value}>
 
-                        {op.titulo}
+                        {op.text}
                         
                     </option>
                 )
