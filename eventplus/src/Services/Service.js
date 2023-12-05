@@ -13,7 +13,7 @@ export const eventsResource = '/Evento'
 export const LoginResource = '/login'
 
 // Rota para login
-export const MyEventsResource = '/PresencasEvento'
+export const MyEventsResource = '/PresencasEvento/ListarMinhas'
 
 // Rota para Home
 export const HomeResource = '/'

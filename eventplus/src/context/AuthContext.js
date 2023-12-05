@@ -16,6 +16,8 @@ export const userDecodeToken = (theToken) => {
         role: decoded.role,
         // Propriedade 'nome' contém o nome do usuário extraído do token
         nome: decoded.name,
+        // Propriedade 'userID' contém o id do usuário extraído do token
+        userId: decoded.jti,
         // Propriedade 'token' mantém o token original recebido como argumento
         token: theToken
     };

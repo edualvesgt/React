@@ -38,7 +38,7 @@ export const Select = ({ options, name, id, manipulationFunction, additionalClas
             onChange={manipulationFunction}
 
         >
-            <option defaultValue  hidden >Selecione o tipo do evento </option>
+            <option defaultValue  hidden>Selecione o tipo do evento </option>
 
 
             {options.map((op) => {
