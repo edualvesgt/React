@@ -11,7 +11,7 @@ import Modal from "../../components/Modal/Modal";
 import Notification from '../../components/Notification/Notification';
 
 // Serviços
-import api, { eventsResource, MyEventsResource } from "../../Services/Service";
+import api, { commentsResource, eventsResource, MyEventsResource, presenceEventResource } from "../../Services/Service";
 
 // Estilos
 import "./EventosAlunoPage.css";
@@ -38,46 +38,40 @@ const EventosAlunoPage = () => {
 
   // UseEffect para carregar os eventos baseado no tipo selecionado
   useEffect(() => {
-    // Função para carregar os tipos de eventos ao montar a página
-    async function loadEventsType() {
-
-      if (tipoEvento === "1") {
-        try {
-          const returnAllEvents = await api.get(eventsResource);
-
-          const returnEvents = await api.get(`${MyEventsResource}/${userData.userId}`);
-
-          const markedEvents = verifyPresence(returnAllEvents, returnEvents)
-          setEventos(markedEvents)
-
-          console.log("Todos eventos");
-          console.log(returnAllEvents.data);
-          console.log("MEus Eventos");
-          console.log(returnEvents.data);
-          console.log("eventos marcados");
-          console.log(markedEvents.data);
-
-        } catch (error) {
-          notifyError("Erro na API ")
-        }
-      } else if (tipoEvento === "2") {
-        try {
-          const returnEvents = await api.get(`${MyEventsResource}/${userData.userId}`);
-          // Verifique a estrutura dos dados retornados para acessar corretamente os eventos
-          const arrEvents = returnEvents.data.map((e) => e.evento);
-          setEventos(arrEvents);
-        } catch (error) {
-          notifyError("Erro na API")
-        }
-      } else {
-        setEventos([]);
-      }
-    }
-
     loadEventsType();
-  }, [tipoEvento]);
+  }, [tipoEvento, userData.userId]);
 
+  // Função para carregar os tipos de eventos ao montar a página
+  async function loadEventsType() {
 
+    if (tipoEvento === "1") {
+      try {
+        const returnAllEvents = await api.get(eventsResource);
+
+        const returnEvents = await api.get(`${MyEventsResource}/${userData.userId}`);
+
+        const markedEvents = verifyPresence(returnAllEvents.data, returnEvents.data)
+        setEventos(markedEvents)
+
+      } catch (error) {
+        notifyError("Erro na API ")
+      }
+    } else if (tipoEvento === "2") {
+      try {
+        const returnEvents = await api.get(`${MyEventsResource}/${userData.userId}`);
+        // Verifique a estrutura dos dados retornados para acessar corretamente os eventos
+        const arrEvents = []
+        returnEvents.data.forEach((e) => {
+          arrEvents.push({ ...e.evento, situacao: e.situacao, idPresencaEvento: e.idPresencaEvento })
+        });
+        setEventos(arrEvents);
+      } catch (error) {
+        notifyError("Erro na API")
+      }
+    } else {
+      setEventos([]);
+    }
+  }
 
   // Função para verificar a presença de eventos do usuário em todos os eventos
   const verifyPresence = (arrAllEvents, eventsUser) => {
@@ -86,9 +80,12 @@ const EventosAlunoPage = () => {
       // Itera sobre todos os eventos em eventsUser
       for (let i = 0; i < eventsUser.length; i++) {
         // Verifica se o ID do evento em arrAllEvents é igual ao ID do evento em eventsUser
-        if (arrAllEvents[x].idEvento === eventsUser[i].idEvento) {
+        if (arrAllEvents[x].idEvento === eventsUser[i].evento.idEvento) {
           // Se os IDs forem iguais, atualiza a situação do evento em arrAllEvents com a situação do evento em eventsUser
           arrAllEvents[x].situacao = eventsUser[i].situacao;
+          // Se os IDs forem iguais, atualiza O id do Presenca evento em arrAllEvents com a situação do evento em eventsUser
+          arrAllEvents[x].idPresencaEvento = eventsUser[i].idPresencaEvento;
+          break;
         }
       }
     }
@@ -102,8 +99,8 @@ const EventosAlunoPage = () => {
   }
 
   // Função para carregar o comentário do usuário
-  async function loadMyComentary(idComentary) {
-    return "????";
+  async function loadMyCommentary(idComentary) {
+    alert("Teste");
   }
 
   // Função para exibir ou esconder o modal
@@ -112,49 +109,119 @@ const EventosAlunoPage = () => {
   };
 
   // Função para remover o comentário
-  const commentaryRemove = () => {
+  const commentaryRemove = (userId) => {
     alert("Remover o comentário");
   };
 
-  // Função para conectar evento
-  function handleConnect() {
-    alert("Desenvolver a função conectar evento");
+  async function newCommentary( situacao, comentaryText) {
+    try {
+      const postEvent = await api.post(commentsResource , {
+        "descricao": comentaryText,
+        "exibe": situacao,
+        "idUsuario": userData.userId
+        // "idEvento": eventId
+      })
+      notifySuccess("Comentario Realizado")
+
+      loadEventsType();
+
+    } catch (error) {
+      notifyError("Erro ao Comentar ")
+    }
   }
+
+  // Função para conectar evento
+  async function handleConnect(eventId, functionConnect, presenceId = null) {
+
+    // Verifica se a ação é para conectar
+    if (functionConnect === "connect") {
+
+      try {
+        // Faz uma requisição POST para confirmar a presença no evento
+        const promise = await api.post(presenceEventResource, {
+          situacao: true,
+          idUsuario: userData.userId,
+          idEvento: eventId
+        })
+
+        // Se a requisição for bem-sucedida (status 201), exibe uma mensagem de sucesso
+        if (promise.status === 201) {
+          notifySuccess("Seja Bem vindo ao Evento, Presença Confirmada")
+        }
+
+        // Obtém todos os eventos após a confirmação da presença
+        const allEvents = await api.get(eventsResource)
+        // Atualiza a lista de eventos na aplicação
+        setEventos(allEvents.data)
+
+        loadEventsType()
+      } catch (error) {
+        // Se houver um erro na requisição, exibe uma mensagem de erro
+        notifyError("Erro na API")
+      }
+
+      // Encerra a função após a ação de conectar
+      return;
+    }
+
+    //Bloco de codigo sem ELSE pois foi encerrado com return e inicializado novamente 
+
+    // Se a ação não for conectar, então é para desconectar
+    try {
+      // Faz uma requisição DELETE para remover a presença do evento
+      const unconnected = await api.delete(`${presenceEventResource}/${presenceId}`)
+
+      // Se a remoção for bem-sucedida (status 204), atualiza a lista de eventos na aplicação
+      if (unconnected.status === 204) {
+        const allEvents = await api.get(eventsResource)
+        setEventos(allEvents.data)
+
+      }
+      // Exibe uma mensagem de sucesso informando que o cadastro foi desfeito
+      notifySuccess("Seu Cadastro foi desfeito com sucesso")
+
+      loadEventsType()
+    } catch (error) {
+      // Se houver um erro na requisição, exibe uma mensagem de erro
+      notifyError("Erro na API")
+    }
+  }
+
 
   const notifySuccess = (textNote) => {
     setNotifyUser({
-        titleNote: "Sucesso",
-        textNote,
-        imgIcon: 'success',
-        imgAlt: 'Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.',
-        showMessage: true
+      titleNote: "Sucesso",
+      textNote,
+      imgIcon: 'success',
+      imgAlt: 'Imagem de ilustração de sucesso. Moça segurando um balão com símbolo de confirmação ok.',
+      showMessage: true
     });
-};
+  };
 
-const notifyError = (textNote) => {
+  const notifyError = (textNote) => {
     setNotifyUser({
-        titleNote: "Erro",
-        textNote,
-        imgIcon: 'danger',
-        imgAlt: 'Imagem de ilustração de erro. Homem segurando um balão com símbolo de X.',
-        showMessage: true
+      titleNote: "Erro",
+      textNote,
+      imgIcon: 'danger',
+      imgAlt: 'Imagem de ilustração de erro. Homem segurando um balão com símbolo de X.',
+      showMessage: true
     });
-};
+  };
 
-const notifyWarning = (textNote) => {
+  const notifyWarning = (textNote) => {
     setNotifyUser({
-        titleNote: "Aviso",
-        textNote,
-        imgIcon: 'warning',
-        imgAlt: 'Imagem de ilustração de aviso. Mulher em frente a um grande ponto de exclamação.',
-        showMessage: true
+      titleNote: "Aviso",
+      textNote,
+      imgIcon: 'warning',
+      imgAlt: 'Imagem de ilustração de aviso. Mulher em frente a um grande ponto de exclamação.',
+      showMessage: true
     });
-};
+  };
 
 
   return (
     <>
-     {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
+      {<Notification {...notifyUser} setNotifyUser={setNotifyUser} />}
       <MainContent>
         <Container>
           <Title titleText={"Eventos"} className="custom-title" />
@@ -187,6 +254,8 @@ const notifyWarning = (textNote) => {
       {showModal ? (
         <Modal
           userId={userData.userId}
+          fnNewCommentary={newCommentary}
+          fnGet={loadMyCommentary}
           showHideModal={showHideModal}
           fnDelete={commentaryRemove}
         />

@@ -12,11 +12,17 @@ export const eventsResource = '/Evento'
 // Rota para login
 export const LoginResource = '/login'
 
-// Rota para login
+// Rota para Meus Eventos
 export const MyEventsResource = '/PresencasEvento/ListarMinhas'
+
+// Rota para Comentario
+export const commentsResource = '/ComentariosEvento'
 
 // Rota para Home
 export const HomeResource = '/'
+
+// Rota para Presenca Eventos
+export const presenceEventResource = '/PresencasEvento'
 
 
 // Rota para Instituicao

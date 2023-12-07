@@ -9,7 +9,7 @@ const Toggle = ({manipulationFunction = null ,toggleActive= false }) => {
       <input type="checkbox" id={`switch-check${fakeId}`} className="toggle__switch-check" />
 
       <label className={`toggle ${toggleActive ? "toggle--active" :""}`}  htmlFor="switch-check" onClick={manipulationFunction}>
-        <div className={`toggle___switch ${toggleActive ? "toggle__switch--active" : ""}`}></div>
+        <div className={`toggle__switch ${toggleActive ? "toggle__switch--active" : ""}`}></div>
       </label>
     </>
   );
