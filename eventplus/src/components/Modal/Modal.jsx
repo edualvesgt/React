@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import trashDelete from "../../assets/images/trash-delete-red.png";
+import { UserContext } from "../../context/AuthContext";
 
 import { Button, Input } from "../FormComponents/FormComponents";
 import "./Modal.css";
@@ -13,11 +14,16 @@ const Modal = ({
   fnGet = null,
   fnNewCommentary = null
 }) => {
+ useEffect( () => {
+    async function loadDados() {
+      fnGet(userData.userId, userData.idEvento)
+      console.log(userData);
+    }
+    loadDados();
+  }, [commentaryText])
 
-useEffect( () => {
-  async function loadDados() {
-    fnGet();
-}})
+const {userData} = useContext(UserContext)
+const [comentarioDesc, setComentarioDesc] = useState("");
   
   return (
     <div className="modal">
@@ -43,14 +49,20 @@ useEffect( () => {
         </div>
 
         <Input
-          placeholder="Escreva seu comentário..."
-          className="comentary__entry"
+            placeholder="Escreva seu comentário..."
+            additionalClass="comentary__entry"
+            value={comentarioDesc}
+            manipulationFunction={(e) => {
+              setComentarioDesc(e.target.value)
+            }}
         />
 
         <Button
           textButton="Comentar"
           additionalClass="comentary__button"
-          manipulationFunction={fnNewCommentary}
+          manipulationFunction={() => {
+            fnNewCommentary(comentarioDesc.trim(), userData.userId, userData.userId);
+          }}
         />
       </article>
     </div>

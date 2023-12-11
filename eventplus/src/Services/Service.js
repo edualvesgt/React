@@ -38,11 +38,12 @@ export const nextEventResource = '/Evento/ListarProximos'
 export const eventsTypeResource = '/TiposEvento'
 
 const apiPort = '5000';
-const localApiUri = `http://localhost:${apiPort}/api`;
-const externalApiUri = null;
+// const localApiUri = `http://localhost:${apiPort}/api`;
+const externalApiUri = `https://eventwebapi.azurewebsites.net/`;
 
 const api = axios.create({
-    baseURL:localApiUri
+    // baseURL:localApiUri
+    baseURL:externalApiUri
 });
 
 export default api;

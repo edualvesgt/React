@@ -31,10 +31,13 @@ const EventosAlunoPage = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [notifyUser, setNotifyUser] = useState({});
+  const [comentario , setComentarios] = useState();
+  const [idComentario, setIdComentario] = useState ();
+  const [novoComentario , setNovoCometario ] = useState("");
+  const [ idEvento ,setIdEvento ] = useState ();
 
-
-  // Recupera os dados globais do usuário
-  const { userData, setUserData } = useContext(UserContext);
+   // Recupera os dados globais do usuário
+   const { userData, setUserData } = useContext(UserContext);
 
   // UseEffect para carregar os eventos baseado no tipo selecionado
   useEffect(() => {
@@ -73,7 +76,7 @@ const EventosAlunoPage = () => {
     }
   }
 
-  // Função para verificar a presença de eventos do usuário em todos os eventos
+  // Função p ra verificar a presença de eventos do usuário em todos os eventos
   const verifyPresence = (arrAllEvents, eventsUser) => {
     // Itera sobre todos os eventos em arrAllEvents
     for (let x = 0; x < arrAllEvents.length; x++) {
@@ -100,7 +103,9 @@ const EventosAlunoPage = () => {
 
   // Função para carregar o comentário do usuário
   async function loadMyCommentary(idComentary) {
-    alert("Teste");
+    const request = await api.get(`${commentsResource}/BuscarPorIdUsuario?idUsuario=${userData.userId}&idEvento=${idComentary}`)
+    setComentarios(request.data.descricao)
+    setIdComentario(request.data.idComentario)
   }
 
   // Função para exibir ou esconder o modal
@@ -113,17 +118,16 @@ const EventosAlunoPage = () => {
     alert("Remover o comentário");
   };
 
-  async function newCommentary( situacao, comentaryText) {
+  async function newCommentary() {
     try {
-      const postEvent = await api.post(commentsResource , {
-        "descricao": comentaryText,
-        "exibe": situacao,
-        "idUsuario": userData.userId
-        // "idEvento": eventId
+      const postEvent = await api.post(commentsResource, {
+        "descricao": novoComentario,
+        "exibe": true,
+        "idUsuario": userData.userId,
+        "idEvento": idEvento
       })
       notifySuccess("Comentario Realizado")
-
-      loadEventsType();
+      
 
     } catch (error) {
       notifyError("Erro ao Comentar ")
