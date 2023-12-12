@@ -39,7 +39,7 @@ export const eventsTypeResource = '/TiposEvento'
 
 const apiPort = '5000';
 // const localApiUri = `http://localhost:${apiPort}/api`;
-const externalApiUri = `https://eventwebapi.azurewebsites.net/`;
+const externalApiUri = `https://eventwebapi.azurewebsites.net/api`;
 
 const api = axios.create({
     // baseURL:localApiUri
