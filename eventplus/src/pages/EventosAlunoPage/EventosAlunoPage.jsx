@@ -31,13 +31,13 @@ const EventosAlunoPage = () => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [notifyUser, setNotifyUser] = useState({});
-  const [comentario , setComentarios] = useState();
-  const [idComentario, setIdComentario] = useState ();
-  const [novoComentario , setNovoCometario ] = useState("");
-  const [ idEvento ,setIdEvento ] = useState ();
+  const [comentario, setComentario] = useState();
+  const [idComentario, setIdComentario] = useState();
+  const [novoComentario, setNovoCometario] = useState("");
+  const [idEvento, setIdEvento] = useState();
 
-   // Recupera os dados globais do usuário
-   const { userData, setUserData } = useContext(UserContext);
+  // Recupera os dados globais do usuário
+  const { userData, setUserData } = useContext(UserContext);
 
   // UseEffect para carregar os eventos baseado no tipo selecionado
   useEffect(() => {
@@ -54,6 +54,7 @@ const EventosAlunoPage = () => {
         const returnEvents = await api.get(`${MyEventsResource}/${userData.userId}`);
 
         const markedEvents = verifyPresence(returnAllEvents.data, returnEvents.data)
+        console.log(markedEvents);
         setEventos(markedEvents)
 
       } catch (error) {
@@ -102,15 +103,22 @@ const EventosAlunoPage = () => {
   }
 
   // Função para carregar o comentário do usuário
-  async function loadMyCommentary(idComentary) {
-    const request = await api.get(`${commentsResource}/BuscarPorIdUsuario?idUsuario=${userData.userId}&idEvento=${idComentary}`)
-    setComentarios(request.data.descricao)
+  async function loadMyCommentary(_idEvento) {
+
+    const request = await api.get(`${commentsResource}/BuscarPorIdUsuario?idAluno=${userData.userId}&idEvento=${idEvento}`)
+    setComentario(request.data.descricao)
+    console.log(request.data.descricao);
     setIdComentario(request.data.idComentario)
+
+
   }
 
   // Função para exibir ou esconder o modal
-  const showHideModal = () => {
+  const showHideModal = (idEvento) => {
     setShowModal(!showModal);
+    setUserData({ ...userData, idEvento: idEvento })
+    setIdEvento(idEvento)
+    console.log(idEvento);
   };
 
   // Função para remover o comentário
@@ -126,8 +134,11 @@ const EventosAlunoPage = () => {
         "idUsuario": userData.userId,
         "idEvento": idEvento
       })
+      const request = await api.get(`${commentsResource}/BuscarPorIdUsuario?idAluno=${userData.userId}&idEvento=${idEvento}`)
+      setComentario(novoComentario)
+      setNovoCometario("")
       notifySuccess("Comentario Realizado")
-      
+
 
     } catch (error) {
       notifyError("Erro ao Comentar ")
@@ -244,9 +255,7 @@ const EventosAlunoPage = () => {
           <Table
             dados={eventos}
             fnConnect={handleConnect}
-            fnShowModal={() => {
-              showHideModal();
-            }}
+            fnShowModal={showHideModal}
           />
         </Container>
       </MainContent>
@@ -262,6 +271,9 @@ const EventosAlunoPage = () => {
           fnGet={loadMyCommentary}
           showHideModal={showHideModal}
           fnDelete={commentaryRemove}
+          commentaryText={comentario}
+          fnPost={newCommentary}
+          comentarioDesc ={novoComentario}
         />
       ) : null}
     </>

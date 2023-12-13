@@ -7,12 +7,13 @@ import "./Modal.css";
 
 const Modal = ({
   modalTitle = "Feedback",
-  commentaryText = "Não informado.",
+  commentaryText = "",
+  comentarioDesc,setComentarioDesc = null,
   userId = null,
   showHideModal = false,
   fnDelete = null,
   fnGet = null,
-  fnNewCommentary = null
+  fnPost = null
 }) => {
  useEffect( () => {
     async function loadDados() {
@@ -20,10 +21,10 @@ const Modal = ({
       console.log(userData);
     }
     loadDados();
-  }, [commentaryText])
+  }, [comentarioDesc])
 
 const {userData} = useContext(UserContext)
-const [comentarioDesc, setComentarioDesc] = useState("");
+// const [comentarioDesc, setComentarioDesc] = useState("");
   
   return (
     <div className="modal">
@@ -60,9 +61,7 @@ const [comentarioDesc, setComentarioDesc] = useState("");
         <Button
           textButton="Comentar"
           additionalClass="comentary__button"
-          manipulationFunction={() => {
-            fnNewCommentary(comentarioDesc.trim(), userData.userId, userData.userId);
-          }}
+          manipulationFunction={fnPost}
         />
       </article>
     </div>
