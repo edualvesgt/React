@@ -33,14 +33,17 @@ const EventosAlunoPage = () => {
   const [notifyUser, setNotifyUser] = useState({});
   const [comentario, setComentario] = useState();
   const [idComentario, setIdComentario] = useState();
-  const [novoComentario, setNovoCometario] = useState("");
+  const [novoComentario, setNovoComentario] = useState("");
   const [idEvento, setIdEvento] = useState();
+
+  const [newCommentary, setNewCommentary] = useState();
 
   // Recupera os dados globais do usuário
   const { userData, setUserData } = useContext(UserContext);
 
   // UseEffect para carregar os eventos baseado no tipo selecionado
   useEffect(() => {
+    
     loadEventsType();
   }, [tipoEvento, userData.userId]);
 
@@ -54,7 +57,7 @@ const EventosAlunoPage = () => {
         const returnEvents = await api.get(`${MyEventsResource}/${userData.userId}`);
 
         const markedEvents = verifyPresence(returnAllEvents.data, returnEvents.data)
-        console.log(markedEvents);
+
         setEventos(markedEvents)
 
       } catch (error) {
@@ -107,8 +110,8 @@ const EventosAlunoPage = () => {
 
     const request = await api.get(`${commentsResource}/BuscarPorIdUsuario?idAluno=${userData.userId}&idEvento=${idEvento}`)
     setComentario(request.data.descricao)
-    console.log(request.data.descricao);
-    setIdComentario(request.data.idComentario)
+    setIdComentario(request.data.idComentarioEvento)
+    console.log(request.data.idComentarioEvento);
 
 
   }
@@ -118,25 +121,30 @@ const EventosAlunoPage = () => {
     setShowModal(!showModal);
     setUserData({ ...userData, idEvento: idEvento })
     setIdEvento(idEvento)
-    console.log(idEvento);
   };
 
   // Função para remover o comentário
-  const commentaryRemove = (userId) => {
-    alert("Remover o comentário");
+  async function commentaryRemove() {
+    try {
+        const request = await api.delete(`${commentsResource}/${idComentario}`)
+        setComentario("")
+        notifySuccess("Comentario Deletado Com Sucesso")
+    } catch (error) {
+      notifyError("Erro Verificar Conexão ")
+    }
   };
 
-  async function newCommentary() {
+  async function postCommentary() {
     try {
       const postEvent = await api.post(commentsResource, {
-        "descricao": novoComentario,
+        "descricao": newCommentary,
         "exibe": true,
         "idUsuario": userData.userId,
         "idEvento": idEvento
       })
       const request = await api.get(`${commentsResource}/BuscarPorIdUsuario?idAluno=${userData.userId}&idEvento=${idEvento}`)
-      setComentario(novoComentario)
-      setNovoCometario("")
+      setComentario(newCommentary)
+      setNewCommentary("")
       notifySuccess("Comentario Realizado")
 
 
@@ -272,8 +280,10 @@ const EventosAlunoPage = () => {
           showHideModal={showHideModal}
           fnDelete={commentaryRemove}
           commentaryText={comentario}
-          fnPost={newCommentary}
-          comentarioDesc ={novoComentario}
+          fnPost={postCommentary}
+
+          newCommentary={newCommentary}
+          setNewCommentary={setNewCommentary}
         />
       ) : null}
     </>

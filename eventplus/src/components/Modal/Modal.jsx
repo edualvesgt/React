@@ -8,7 +8,10 @@ import "./Modal.css";
 const Modal = ({
   modalTitle = "Feedback",
   commentaryText = "",
-  comentarioDesc,setComentarioDesc = null,
+
+  newCommentary,
+  setNewCommentary,
+
   userId = null,
   showHideModal = false,
   fnDelete = null,
@@ -21,10 +24,9 @@ const Modal = ({
       console.log(userData);
     }
     loadDados();
-  }, [comentarioDesc])
+  }, [])
 
 const {userData} = useContext(UserContext)
-// const [comentarioDesc, setComentarioDesc] = useState("");
   
   return (
     <div className="modal">
@@ -41,7 +43,7 @@ const {userData} = useContext(UserContext)
             src={trashDelete}
             className="comentary__icon-delete"
             alt="Ícone de uma lixeira"
-            onClick={() => {fnDelete(userId)}}
+            onClick={fnDelete}
           />
 
           <p className="comentary__text">{commentaryText}</p>
@@ -52,9 +54,9 @@ const {userData} = useContext(UserContext)
         <Input
             placeholder="Escreva seu comentário..."
             additionalClass="comentary__entry"
-            value={comentarioDesc}
-            manipulationFunction={(e) => {
-              setComentarioDesc(e.target.value)
+            value={newCommentary}
+            manipulationFunction={e => {
+              setNewCommentary(e.target.value)
             }}
         />
 
