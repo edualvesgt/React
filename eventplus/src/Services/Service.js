@@ -26,7 +26,7 @@ export const presenceEventResource = '/PresencasEvento'
 
 
 // Rota para Instituicao
-export const IstituicaoResource = '/instituicao'
+export const institutionResource = '/instituicao'
 /**
  *  Rota para o recurso proximos eventos
  */
