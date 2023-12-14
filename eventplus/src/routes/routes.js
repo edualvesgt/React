@@ -9,16 +9,18 @@ import LoginPage from '../pages/LoginPage/LoginPage';
 import TipoEventos from '../pages/TipoEventosPage/TipoEventosPage';
 import EventosAlunosPage from '../pages/EventosAlunoPage/EventosAlunoPage';
 import { PrivateRoute } from './PrivateRoutes';
+import DetailsPage from '../pages/DetailsPage/DetailsPage';
 
 const routes = () => {
     return (
         <div>
             <BrowserRouter>
-            <Header/>
+                <Header />
                 <Routes>
                     <Route path="/" element={<HomePage />} exact />
-
+                    <Route path='/detalhes' element = {<DetailsPage/>}/>
                     <Route path="/login" element={<LoginPage />} />
+
 
                     <Route
                         path="/tipo-eventos"
@@ -37,7 +39,7 @@ const routes = () => {
                     <Route
                         path={"/eventos-alunos"}
                         element={<PrivateRoute redirectTo='/'>
-                            <EventosAlunosPage/>
+                            <EventosAlunosPage />
                         </PrivateRoute>}
                     />
 

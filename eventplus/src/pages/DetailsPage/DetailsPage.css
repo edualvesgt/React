@@ -1,0 +1,13 @@
+.detalhes-evento-section, .lista-comentario-section{
+    padding: 50px 0;
+ }
+
+ 
+/* lista de Eventos */
+.lista-comentario-section {
+    background-color: var(--color-red);
+    width: 100%;
+    padding-bottom: 50px;
+    overflow: auto;
+    /* height: 432px; */
+}

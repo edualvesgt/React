@@ -23,7 +23,7 @@ const LoginPage = () => {
   // Declarações de useState organizadas em ordem alfabética
   const navigate = useNavigate();
   const [notifyUser, setNotifyUser] = useState({});
-  const [user, setUser] = useState({ email: "teste@teste.com", senha: "" });
+  const [user, setUser] = useState({ email: "dudu@gmail.com", senha: "dudu@gmail.com" });
   const { userData, setUserData } = useContext(UserContext); // Importa os Dados do usuario
   // Declarações de useState organizadas em ordem alfabética
 
