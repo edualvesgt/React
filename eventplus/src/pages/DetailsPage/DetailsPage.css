@@ -1,13 +1,52 @@
-.detalhes-evento-section, .lista-comentario-section{
+@font-face {
+    font-family: Poppins-Regular;
+    src: url(../../assets/Fonts/Poppins/Poppins-Regular.ttf);
+  }
+  
+
+.detalhes-evento-section, .lista-comentarios-section{
     padding: 50px 0;
  }
 
  
 /* lista de Eventos */
-.lista-comentario-section {
+.lista-comentarios-section {
+    margin-top: 20px;
     background-color: var(--color-red);
     width: 100%;
     padding-bottom: 50px;
     overflow: auto;
     /* height: 432px; */
 }
+.detalhes-evento__box{ 
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.left-items,
+.right-items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-items,
+.right-items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinha os itens à esquerda */
+  margin-top: 45px; /* Adiciona margem à direita para espaçamento */
+  padding: 0 0 0 20px; /* Adiciona padding para separar os itens verticalmente */
+}
+
+.right-items {
+  align-items: flex-end; /* Alinha os itens à direita */
+  margin-right: 0; /* Remove a margem extra do último elemento à direita */
+  padding: 0 20px 0 0; /* Adiciona padding para separar os itens verticalmente */
+}
+
+.item {
+    font-family: Poppins-Regular;
+    margin-bottom: 20px; /* Adiciona espaçamento entre os itens */
+  }

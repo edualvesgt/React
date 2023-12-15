@@ -1,8 +1,7 @@
 import React from "react";
 import "./TableDetails.css"
 
-const TableDe = () => {
-
+const TableDetails = () => {
     return (
         <table className='table-data'>
 
@@ -30,4 +29,5 @@ const TableDe = () => {
 
 }
 
-export default TableDe;
+
+export default TableDetails;

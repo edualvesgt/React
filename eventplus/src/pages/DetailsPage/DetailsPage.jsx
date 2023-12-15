@@ -5,7 +5,7 @@ import Title from '../../components/Titulo/Titulo';
 import MainContent from '../../components/Main/MainContent.jsx'
 import Container from '../../components/Container/Container';
 
-import TableDetail from './TableDetails/TableDetails';
+import TableDetails from './TableDetails/TableDetails';
 import { useParams } from 'react-router-dom';
 
 import api, {eventsResource, eventsTypeResource, institutionResource} from "../../Services/Service"
@@ -50,8 +50,9 @@ const DetalhesEvento = () => {
         try {
             const promise = await api.get(`${eventsResource}/${idEvento}`);
             setEvento(promise.data);
-
+            console.log("ID EVENTO :");
             console.log(promise.data);
+
         } catch (error) {
             console.log("Erro na api");
             console.log(error);
@@ -61,9 +62,9 @@ const DetalhesEvento = () => {
     useEffect(()=>{
         loadEvent();
         
-        loadEventType();
+        // loadEventType();
 
-        loadEventInstitution();
+        // loadEventInstitution();
     }, []);
 
     return (
@@ -73,19 +74,21 @@ const DetalhesEvento = () => {
                     <Container>
                         <div className="detalhes-evento__box">                       
                             <Title titleText={"Nome Evento"}/>
-                            <>
-                            <h1>Descricao</h1>
+                            <div className='left-items'>
+                            <h1 className='item' >Descricao</h1>
                             <p>{evento.descricao}</p>
                             
-                            <h1>dataEvento</h1>
+                            <h1 className='item'>dataEvento</h1>
                             <p>{new Date(evento.dataEvento).toLocaleDateString()}</p>
-                            
-                            <h1>TipoEvento</h1>
+                            </div>
+
+                            <div className='right-items'>
+                            <h1 className='item'>TipoEvento</h1>
                             <p>{tipoEvento.titulo}</p>
                             
-                            <h1>Instituicao</h1>
+                            <h1 className='item'>Instituicao</h1>
                             <p>{instituicao.nomeFantasia}</p>
-                            </>
+                            </div>
 
                         </div>
                     </Container>
@@ -94,11 +97,9 @@ const DetalhesEvento = () => {
             {/* Listagem de comentarios */}
             <section className='lista-comentarios-section'>
                     <Container>
-                        <Title titleText={"Comentarios"} color=""/>
+                        <Title titleText={"Comentarios"} color="white"/>
 
-                        <TableDetail
-                            
-                        />
+                        <TableDetails/>
                     </Container>
             </section>
         </MainContent>
