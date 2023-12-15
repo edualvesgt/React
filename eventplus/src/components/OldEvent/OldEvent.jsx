@@ -26,7 +26,7 @@ const OldEvent = ({title, decription, eventDate, idEvent}) => {
             <p className='event-card__description'>{dateFormatDbToView(eventDate)}</p> {/* {dateFormatDbToView(eventDate)}    FORMA CHAMANDO FUNCAO CRIADA EM Utils/stringFunctions.js PARA CONVERTER A DATA, NomeFuncao: dateFormatDbToView */}
             {/* <p className='event-card__description'>{new Date(eventDate).toLocaleDateString()}</p> */} {/*new Date(eventDate).toLocaleDateString()   FORMA COM FUNCAO NATIVA JS MELHOR PARA FAZER */}
 
-            <Link to={`/detalhes-evento/${idEvent}`} className='event-card__connect-link'>Visualizar</Link>
+            <Link to={`/detalhes/${idEvent}`} className='event-card__connect-link'>Visualizar</Link>
         </article>
     );
 };

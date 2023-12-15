@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useContext } from 'react';
 import "./DetailsPage.css"
 
 import Title from '../../components/Titulo/Titulo';
@@ -7,51 +7,26 @@ import Container from '../../components/Container/Container';
 
 import TableDetails from './TableDetails/TableDetails';
 import { useParams } from 'react-router-dom';
+import { UserContext } from '../../context/AuthContext';
 
-import api, {eventsResource, eventsTypeResource, institutionResource} from "../../Services/Service"
+import api, {eventsResource, commentsResource, commentsTrueResource} from "../../Services/Service"
 
 const DetalhesEvento = () => {
 
-    const {idEvento} = useParams();
+    const { userData } = useContext(UserContext);
+
+    const {idEvento} = useParams(); 
 
     const [evento, setEvento] = useState([]);
 
-    const [tipoEvento, setTipoEvento] = useState([]);
-
-    const [instituicao, setInstituicao] = useState([]);
-
-
-    async function loadEventInstitution() {
-        try {
-            const promise = await api.get(`${institutionResource}/${evento.idInstituicao}`)
-
-            setInstituicao(promise.data);
-        } catch (error) {
-            console.log("Erro na api");
-            console.log(error);
-        }
-    }
-
-    async function loadEventType(){
-        try {
-            const promise = await api.get(`${eventsTypeResource}/${evento.idTipoEvento}`)
-
-            setTipoEvento(promise.data);
-
-            console.log("Tipo Evento");
-            console.log(promise.data);
-        } catch (error) {
-            console.log("Erro na api");
-            console.log(error);
-        }
-    }
+    const [comentarios, setComentarios] = useState([]);
 
     async function loadEvent(){
         try {
             const promise = await api.get(`${eventsResource}/${idEvento}`);
-            setEvento(promise.data);
-            console.log("ID EVENTO :");
+            console.log("OLha AQQQQ");
             console.log(promise.data);
+            setEvento(promise.data);
 
         } catch (error) {
             console.log("Erro na api");
@@ -59,12 +34,48 @@ const DetalhesEvento = () => {
         }
     }
 
+    async function loadAllComentary() {
+        try {
+            const promise = await api.get(`${commentsResource}`)
+
+            setComentarios(promise.data);
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa777");
+            console.log(promise.data);
+        } catch (error) {
+            console.log("Erro na api");
+            console.log(error);
+        }
+    }
+
+    async function loadTrueComentary() {
+        try {
+            const promise = await api.get(`${commentsTrueResource}`)
+
+            setComentarios(promise.data);
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            console.log(promise.data);
+            
+        } catch (error) {
+            console.log("Erro na api");
+            console.log(error);
+        }
+    }
+
+    function loadComentaryByUser() {
+        if (userData.nome && userData.role === "Administrador") {
+            loadAllComentary();
+        } else if (userData.nome && userData.role === "Aluno") {
+            loadTrueComentary();
+        } 
+    }
+    
+    
+
+
     useEffect(()=>{
         loadEvent();
         
-        // loadEventType();
-
-        // loadEventInstitution();
+        loadComentaryByUser();
     }, []);
 
     return (
@@ -72,8 +83,10 @@ const DetalhesEvento = () => {
         <MainContent>
             <section className="detalhes-evento-section">
                     <Container>
-                        <div className="detalhes-evento__box">                       
-                            <Title titleText={"Nome Evento"}/>
+
+                        <div className="detalhes-evento__box">     
+                        <Title titleText={evento.nomeEvento}/>
+
                             <div className='left-items'>
                             <h1 className='item' >Descricao</h1>
                             <p>{evento.descricao}</p>
@@ -83,11 +96,12 @@ const DetalhesEvento = () => {
                             </div>
 
                             <div className='right-items'>
+
                             <h1 className='item'>TipoEvento</h1>
-                            <p>{tipoEvento.titulo}</p>
+                            <p>{evento.tiposEvento?.titulo}</p>
                             
                             <h1 className='item'>Instituicao</h1>
-                            <p>{instituicao.nomeFantasia}</p>
+                            <p>{evento.instituicao?.nomeFantasia}</p> 
                             </div>
 
                         </div>
@@ -99,7 +113,9 @@ const DetalhesEvento = () => {
                     <Container>
                         <Title titleText={"Comentarios"} color="white"/>
 
-                        <TableDetails/>
+                        <TableDetails
+                            dadosComent={comentarios}
+                        />
                     </Container>
             </section>
         </MainContent>

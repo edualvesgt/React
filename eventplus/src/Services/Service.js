@@ -18,6 +18,9 @@ export const MyEventsResource = '/PresencasEvento/ListarMinhas'
 // Rota para Comentario
 export const commentsResource = '/ComentariosEvento'
 
+// Rota para Comentario
+export const commentsTrueResource = '/ComentariosEvento/ListarSomenteExibe';
+
 // Rota para Home
 export const HomeResource = '/'
 

@@ -1,7 +1,8 @@
 import React from "react";
 import "./TableDetails.css"
 
-const TableDetails = () => {
+const TableDetails = ({dadosComent}) => {
+    console.log(dadosComent);
     return (
         <table className='table-data'>
 
@@ -14,14 +15,16 @@ const TableDetails = () => {
             </thead>
             {/* Corpo */}
             <tbody>
-                <tr className="table-data__head-row">
-                    <td className="table-data__data table-data__data--little">
-                        <p>Usuario</p>
-                    </td>
-                    <td className="table-data__data table-data__data--little">
-                        <p>Comentario</p>
-                    </td>
-                </tr>
+            {dadosComent.map((comentario, index) => (
+          <tr key={index}>
+            <td className="table-data__data table-data__data--little">
+              <p>{comentario.usuario}</p>
+            </td>
+            <td className="table-data__data table-data__data--little">
+              <p>{comentario.descricao}</p>
+            </td>
+          </tr>
+        ))}
             </tbody>
         </table>
     );

@@ -18,7 +18,7 @@ const routes = () => {
                 <Header />
                 <Routes>
                     <Route path="/" element={<HomePage />} exact />
-                    <Route path='/detalhes' element = {<DetailsPage/>}/>
+                    <Route path='/detalhes/:idEvento' element = {<DetailsPage/>}/>
                     <Route path="/login" element={<LoginPage />} />
 
 
