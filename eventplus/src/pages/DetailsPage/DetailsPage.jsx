@@ -19,7 +19,7 @@ const DetalhesEvento = () => {
 
     const [evento, setEvento] = useState([]);
 
-    const [comentarios, setComentarios] = useState([]);
+    const [ comentarios, setComentarios] = useState([]);
 
     async function loadEvent(){
         try {

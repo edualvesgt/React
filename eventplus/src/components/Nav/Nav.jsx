@@ -33,7 +33,7 @@ const Nav = ({ exibeNavbar, setExibeNavbar }) => {
                 {/* Renderiza uma caixa que contém links para diferentes páginas */}
 
                 <Link to="/" className='navbar__item'>Home</Link> {/* Link para a página inicial */}
-                <Link to ='/detalhes' className='navbar__item'>Detalhes Evento</Link>
+                {/* <Link to ='/detalhes' className='navbar__item'>Detalhes Evento</Link> */}
 
                 {userData.nome && userData.role === "Administrador" ? (
                     <>
